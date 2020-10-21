@@ -883,7 +883,7 @@ class BasePaymentDriver
     protected function createLicense($payment)
     {
         // TODO parse invoice to determine license
-        if ($payment->amount == 20) {
+        if ($payment->amount == WHITE_LABEL_PRICE) {
             $affiliateId = 4;
             $productId = PRODUCT_WHITE_LABEL;
         } else {
@@ -919,6 +919,10 @@ class BasePaymentDriver
             $amount = min($amount, $payment->getCompletedAmount());
         } else {
             $amount = $payment->getCompletedAmount();
+        }
+
+        if ($payment->is_deleted) {
+            return false;
         }
 
         if (! $amount) {
